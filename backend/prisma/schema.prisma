@@ -1,0 +1,129 @@
+// Modelo de datos del EcoHotel. Base de datos propia en PostgreSQL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  guest
+}
+
+enum ReservationStatus {
+  pending
+  confirmed
+  cancelled
+}
+
+enum Difficulty {
+  facil
+  moderada
+  dificil
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String
+  passwordHash String
+  role         Role          @default(guest)
+  phone        String?
+  createdAt    DateTime      @default(now())
+  reservations Reservation[]
+}
+
+model Cabin {
+  id           String        @id @default(cuid())
+  name         String
+  description  String
+  price        Int
+  capacity     Int
+  amenities    String[]
+  imageUrl     String        @default("")
+  galleryUrls  String[]
+  latitude     Float?
+  longitude    Float?
+  featured     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reservations Reservation[]
+  reviews      Review[]
+}
+
+model Activity {
+  id          String     @id @default(cuid())
+  name        String
+  description String
+  details     String
+  cost        Int        @default(0)
+  duration    String     @default("")
+  difficulty  Difficulty @default(facil)
+  imageUrl    String     @default("")
+  galleryUrls String[]
+  includes    String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Reservation {
+  id             String            @id @default(cuid())
+  cabin          Cabin             @relation(fields: [cabinId], references: [id], onDelete: Cascade)
+  cabinId        String
+  cabinName      String
+  user           User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId         String?
+  guestName      String
+  checkIn        DateTime          @db.Date
+  checkOut       DateTime          @db.Date
+  guests         Int               @default(1)
+  whatsappNumber String
+  notes          String            @default("")
+  status         ReservationStatus @default(pending)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([cabinId, status])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  cabin     Cabin    @relation(fields: [cabinId], references: [id], onDelete: Cascade)
+  cabinId   String
+  guestName String
+  rating    Int
+  comment   String
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([cabinId])
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  category    String
+  price       Int
+  available   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Configuración general del hotel (una sola fila, id = 1).
+model HotelSettings {
+  id             Int      @id @default(1)
+  hotelName      String   @default("EcoHotel Madeguadua")
+  whatsappNumber String   @default("573044527620")
+  email          String   @default("ecohotelmadeguadua@gmail.com")
+  address        String   @default("Vereda La Miel, Norcasia, Caldas")
+  latitude       Float    @default(5.5786)
+  longitude      Float    @default(-74.8943)
+  heroImages     String[]
+  updatedAt      DateTime @updatedAt
+}
