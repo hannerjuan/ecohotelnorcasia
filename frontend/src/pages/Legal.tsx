@@ -7,7 +7,7 @@ export function Privacy() {
   return (
     <article className="prose-legal mx-auto max-w-3xl px-4 py-16 sm:px-6">
       <span className="eyebrow">Ley 1581 de 2012</span>
-      <h1 className="serif mb-6 text-5xl text-olive">Política de tratamiento de datos personales</h1>
+      <h1 className="font-display mb-6 text-5xl text-brand">Política de tratamiento de datos personales</h1>
       <p>
         {settings.hotelName}, con domicilio en {settings.address}, es responsable del tratamiento de los datos personales que
         recolecta a través de este sitio web, en cumplimiento de la Ley 1581 de 2012 y el Decreto 1377 de 2013.
@@ -49,7 +49,7 @@ export function Rules() {
   return (
     <article className="prose-legal mx-auto max-w-3xl px-4 py-16 sm:px-6">
       <span className="eyebrow">Para una estadía en armonía</span>
-      <h1 className="serif mb-6 text-5xl text-olive">Reglas de convivencia y cancelación</h1>
+      <h1 className="font-display mb-6 text-5xl text-brand">Reglas de convivencia y cancelación</h1>
       <h2>Horarios</h2>
       <ul>
         <li>Check-in: desde las 3:00 p. m.</li>

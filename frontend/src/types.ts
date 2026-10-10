@@ -24,6 +24,7 @@ export interface Cabin {
   featured: boolean;
   averageRating?: number | null;
   reviewCount?: number;
+  available?: boolean;
 }
 
 export interface Activity {

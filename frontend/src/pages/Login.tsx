@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Leaf, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
+import { LogoMark } from '../components/Logo';
 import { errorMessage } from '../lib/api';
 import { useAuth } from '../lib/auth';
 
@@ -32,8 +33,8 @@ export default function Login() {
     <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
       <form onSubmit={submit} className="card w-full max-w-md space-y-5 p-10">
         <div className="text-center">
-          <Leaf className="mx-auto mb-3 text-olive" size={36} />
-          <h1 className="serif text-4xl text-olive">Iniciar sesión</h1>
+          <LogoMark size={48} className="mx-auto mb-3 text-brand" />
+          <h1 className="font-display text-4xl text-brand">Iniciar sesión</h1>
           <p className="mt-2 text-sm text-ink/60">Acceso para el equipo del hotel</p>
         </div>
         <div>

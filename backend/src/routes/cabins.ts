@@ -3,6 +3,7 @@ import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import { prisma } from '../db.js';
 import { bookedRanges } from '../lib/availability.js';
+import { DATE_RE, parseDate } from '../lib/dates.js';
 import { notFound } from '../lib/errors.js';
 import { cabinSchema } from '../lib/schemas.js';
 import { requireAdmin } from '../middleware/auth.js';
@@ -29,7 +30,28 @@ cabinsRouter.get('/', async (req, res) => {
     take: limit,
   });
   const ratings = await ratingsByCabin(cabins.map((c) => c.id));
-  res.json(cabins.map((c) => ({ ...c, ...(ratings.get(c.id) ?? { averageRating: null, reviewCount: 0 }) })));
+
+  // Búsqueda por fechas y personas: marca cada cabaña como disponible o no.
+  const { checkIn, checkOut } = req.query;
+  const guests = Number(req.query.guests) || 0;
+  let busy: Set<string> | null = null;
+  if (typeof checkIn === 'string' && typeof checkOut === 'string' && DATE_RE.test(checkIn) && DATE_RE.test(checkOut) && checkOut > checkIn) {
+    const conflicts = await prisma.reservation.findMany({
+      where: { status: 'confirmed', checkIn: { lt: parseDate(checkOut) }, checkOut: { gt: parseDate(checkIn) } },
+      select: { cabinId: true },
+    });
+    busy = new Set(conflicts.map((r) => r.cabinId));
+  }
+
+  res.json(
+    cabins
+      .filter((c) => c.capacity >= guests)
+      .map((c) => ({
+        ...c,
+        ...(ratings.get(c.id) ?? { averageRating: null, reviewCount: 0 }),
+        ...(busy ? { available: !busy.has(c.id) } : {}),
+      })),
+  );
 });
 
 cabinsRouter.get('/:id', async (req, res) => {

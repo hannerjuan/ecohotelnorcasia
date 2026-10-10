@@ -50,13 +50,13 @@ export default function AdminLayout() {
 
   if (loading) return <Loading />;
   if (!user) return <Navigate to="/ingresar" replace />;
-  if (user.role !== 'admin') return <div className="serif p-20 text-center text-2xl">Acceso denegado</div>;
+  if (user.role !== 'admin') return <div className="font-display p-20 text-center text-2xl">Acceso denegado</div>;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="serif text-5xl text-olive">Panel de administración</h1>
+          <h1 className="font-display text-5xl text-brand">Panel de administración</h1>
           <p className="text-ink/60">Hola, {user.name}</p>
         </div>
         {permission === 'granted' ? (
@@ -78,7 +78,7 @@ export default function AdminLayout() {
             end={end}
             className={({ isActive }) =>
               `flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium whitespace-nowrap transition ${
-                isActive ? 'bg-olive text-white shadow' : 'text-ink/60 hover:text-olive'
+                isActive ? 'bg-brand text-white shadow' : 'text-ink/60 hover:text-brand'
               }`
             }
           >
@@ -88,7 +88,7 @@ export default function AdminLayout() {
       </nav>
       <Outlet />
       {toast && (
-        <div className="fixed right-6 bottom-6 z-[1600] max-w-sm rounded-2xl bg-olive p-5 text-white shadow-2xl">
+        <div className="fixed right-6 bottom-6 z-[1600] max-w-sm rounded-2xl bg-brand p-5 text-white shadow-2xl">
           <p className="flex items-center gap-2 font-bold"><Bell size={16} /> Nueva solicitud de reserva</p>
           <p className="mt-1 text-sm opacity-90">
             {toast.guestName} · {toast.cabinName} ({toast.checkIn} → {toast.checkOut})

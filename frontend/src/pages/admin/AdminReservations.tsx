@@ -112,22 +112,22 @@ export default function AdminReservations() {
               <span key={s} className={`chip ${STATUS_STYLE[s]}`}>{STATUS_LABEL[s]}: {counts[s]}</span>
             ))}
             {Object.values(filters).some(Boolean) && (
-              <button className="chip bg-cream text-ink/60" onClick={() => setFilters({ cabinId: '', status: '', from: '', to: '', q: '' })}>
+              <button className="chip bg-sand text-ink/60" onClick={() => setFilters({ cabinId: '', status: '', from: '', to: '', q: '' })}>
                 <X size={12} /> Limpiar filtros
               </button>
             )}
           </div>
           <div className="flex gap-2">
-            <div className="flex rounded-full bg-cream p-1">
+            <div className="flex rounded-full bg-sand p-1">
               <button
                 onClick={() => setView('list')}
-                className={`flex items-center gap-1 rounded-full px-4 py-1.5 text-sm ${view === 'list' ? 'bg-white text-olive shadow' : 'text-ink/50'}`}
+                className={`flex items-center gap-1 rounded-full px-4 py-1.5 text-sm ${view === 'list' ? 'bg-white text-brand shadow' : 'text-ink/50'}`}
               >
                 <List size={16} /> Lista
               </button>
               <button
                 onClick={() => setView('calendar')}
-                className={`flex items-center gap-1 rounded-full px-4 py-1.5 text-sm ${view === 'calendar' ? 'bg-white text-olive shadow' : 'text-ink/50'}`}
+                className={`flex items-center gap-1 rounded-full px-4 py-1.5 text-sm ${view === 'calendar' ? 'bg-white text-brand shadow' : 'text-ink/50'}`}
               >
                 <CalendarIcon size={16} /> Calendario
               </button>
@@ -157,11 +157,11 @@ export default function AdminReservations() {
               <div key={r.id} className="card flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
                 <div className="min-w-0">
                   <div className="mb-1 flex flex-wrap items-center gap-2">
-                    <h3 className="serif text-xl">{r.guestName}</h3>
+                    <h3 className="font-display text-xl">{r.guestName}</h3>
                     <span className={`chip ${STATUS_STYLE[r.status]}`}>{STATUS_LABEL[r.status]}</span>
                   </div>
                   <p className="text-sm text-ink/60">
-                    <strong className="text-olive">{r.cabinName}</strong> · {prettyDate(r.checkIn)} → {prettyDate(r.checkOut)} · {n}{' '}
+                    <strong className="text-brand">{r.cabinName}</strong> · {prettyDate(r.checkIn)} → {prettyDate(r.checkOut)} · {n}{' '}
                     {n === 1 ? 'noche' : 'noches'} · {r.guests} pers.
                   </p>
                   <p className="text-xs text-ink/40">Solicitada el {prettyDate(r.createdAt, "d MMM yyyy, h:mm a")}</p>
@@ -178,7 +178,7 @@ export default function AdminReservations() {
                     </>
                   )}
                   {r.status !== 'pending' && (
-                    <button onClick={() => setStatus(r.id, 'pending')} className="btn bg-cream px-4 py-2 text-sm text-ink/70" title="Volver a pendiente">
+                    <button onClick={() => setStatus(r.id, 'pending')} className="btn bg-sand px-4 py-2 text-sm text-ink/70" title="Volver a pendiente">
                       <RotateCcw size={16} /> Pendiente
                     </button>
                   )}
@@ -191,10 +191,10 @@ export default function AdminReservations() {
                   >
                     <MessageCircle size={16} />
                   </a>
-                  <button onClick={() => setDetailId(r.id)} className="btn bg-cream px-3 py-2 text-olive" title="Ver detalle">
+                  <button onClick={() => setDetailId(r.id)} className="btn bg-sand px-3 py-2 text-brand" title="Ver detalle">
                     <Eye size={16} />
                   </button>
-                  <button onClick={() => setToDelete(r)} className="btn bg-cream px-3 py-2 text-red-600" title="Eliminar">
+                  <button onClick={() => setToDelete(r)} className="btn bg-sand px-3 py-2 text-red-600" title="Eliminar">
                     <Trash2 size={16} />
                   </button>
                 </div>
@@ -246,10 +246,10 @@ function ReservationDetailModal({ id, onClose, onStatus }: { id: string; onClose
             <div><dt className="text-ink/50">Llegada</dt><dd className="font-semibold">{prettyDate(data.checkIn)}</dd></div>
             <div><dt className="text-ink/50">Salida</dt><dd className="font-semibold">{prettyDate(data.checkOut)}</dd></div>
           </dl>
-          {data.notes && <p className="rounded-xl bg-cream p-3 text-sm text-ink/70">{data.notes}</p>}
-          <div className="rounded-2xl bg-cream p-4 text-sm">
+          {data.notes && <p className="rounded-xl bg-sand p-3 text-sm text-ink/70">{data.notes}</p>}
+          <div className="rounded-2xl bg-sand p-4 text-sm">
             <div className="flex justify-between"><span>{money(data.cabin.price)} × {data.nights} {data.nights === 1 ? 'noche' : 'noches'}</span><span>{money(data.total)}</span></div>
-            <div className="mt-2 flex justify-between border-t border-olive/10 pt-2 text-lg font-bold text-olive"><span>Total</span><span>{money(data.total)}</span></div>
+            <div className="mt-2 flex justify-between border-t border-brand/10 pt-2 text-lg font-bold text-brand"><span>Total</span><span>{money(data.total)}</span></div>
           </div>
           <div className="flex flex-wrap justify-end gap-2">
             {data.status !== 'confirmed' && (
@@ -281,9 +281,9 @@ function ReservationCalendar({ reservations, onOpen }: { reservations: Reservati
   return (
     <div className="card p-6">
       <div className="mb-6 flex items-center justify-between">
-        <button className="rounded-full p-2 hover:bg-cream" onClick={() => setMonth(addMonths(month, -1))} aria-label="Mes anterior"><ChevronLeft /></button>
-        <h3 className="serif text-2xl text-olive capitalize">{format(month, 'MMMM yyyy', { locale: es })}</h3>
-        <button className="rounded-full p-2 hover:bg-cream" onClick={() => setMonth(addMonths(month, 1))} aria-label="Mes siguiente"><ChevronRight /></button>
+        <button className="rounded-full p-2 hover:bg-sand" onClick={() => setMonth(addMonths(month, -1))} aria-label="Mes anterior"><ChevronLeft /></button>
+        <h3 className="font-display text-2xl text-brand capitalize">{format(month, 'MMMM yyyy', { locale: es })}</h3>
+        <button className="rounded-full p-2 hover:bg-sand" onClick={() => setMonth(addMonths(month, 1))} aria-label="Mes siguiente"><ChevronRight /></button>
       </div>
       <div className="grid grid-cols-7 gap-1 text-center text-xs font-bold tracking-widest text-ink/40 uppercase">
         {['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((d) => <div key={d} className="py-2">{d}</div>)}
@@ -294,9 +294,9 @@ function ReservationCalendar({ reservations, onOpen }: { reservations: Reservati
           return (
             <div
               key={day.toISOString()}
-              className={`min-h-24 rounded-xl border p-1.5 text-left ${isSameMonth(day, month) ? 'border-olive/10 bg-white' : 'border-transparent bg-cream/50 opacity-50'}`}
+              className={`min-h-24 rounded-xl border p-1.5 text-left ${isSameMonth(day, month) ? 'border-brand/10 bg-white' : 'border-transparent bg-sand/50 opacity-50'}`}
             >
-              <div className={`mb-1 text-xs font-semibold ${isToday(day) ? 'inline-block rounded-full bg-olive px-1.5 text-white' : 'text-ink/50'}`}>
+              <div className={`mb-1 text-xs font-semibold ${isToday(day) ? 'inline-block rounded-full bg-brand px-1.5 text-white' : 'text-ink/50'}`}>
                 {day.getDate()}
               </div>
               <div className="space-y-1">

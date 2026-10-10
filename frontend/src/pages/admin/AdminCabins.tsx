@@ -77,7 +77,7 @@ export default function AdminCabins() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="serif text-3xl text-olive">Cabañas</h2>
+        <h2 className="font-display text-3xl text-brand">Cabañas</h2>
         <button className="btn-primary" onClick={() => open()}><Plus size={18} /> Nueva cabaña</button>
       </div>
       {loading ? (
@@ -91,8 +91,8 @@ export default function AdminCabins() {
               <img src={imageOr(c.imageUrl, c.id)} alt={c.name} className="h-44 w-full object-cover" />
               <div className="p-6">
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="serif text-xl text-olive">{c.name}</h3>
-                  {c.featured && <span className="chip bg-olive/10 text-olive"><Star size={12} /> Inicio</span>}
+                  <h3 className="font-display text-xl text-brand">{c.name}</h3>
+                  {c.featured && <span className="chip bg-brand/10 text-brand"><Star size={12} /> Inicio</span>}
                 </div>
                 <p className="mb-4 text-sm text-ink/60">
                   {money(c.price)} / noche · <Users size={12} className="inline" /> {c.capacity}
@@ -145,7 +145,7 @@ export default function AdminCabins() {
               <GalleryField value={editing.form.galleryUrls} onChange={(galleryUrls) => set({ galleryUrls })} />
             </div>
             <label className="flex items-center gap-2 text-sm md:col-span-2">
-              <input type="checkbox" className="accent-olive" checked={editing.form.featured} onChange={(e) => set({ featured: e.target.checked })} />
+              <input type="checkbox" className="accent-brand" checked={editing.form.featured} onChange={(e) => set({ featured: e.target.checked })} />
               Mostrar en la página de inicio
             </label>
             {error && <p className="text-sm text-red-600 md:col-span-2">{error}</p>}

@@ -1,5 +1,5 @@
 import { useMemo, useState, type FormEvent } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { es } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -73,19 +73,19 @@ export default function CabinDetail() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <Link to="/cabanas" className="mb-8 inline-flex items-center gap-2 font-medium text-olive hover:underline">
+      <Link to="/cabanas" className="mb-8 inline-flex items-center gap-2 font-medium text-brand hover:underline">
         <ChevronLeft size={20} /> Volver a las cabañas
       </Link>
 
       <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
         <div>
           {images.length >= 3 ? (
-            <div className="relative mb-8 grid h-[480px] grid-cols-4 grid-rows-2 gap-3 overflow-hidden rounded-[40px] shadow-2xl">
+            <div className="relative mb-8 grid h-[480px] grid-cols-4 grid-rows-2 gap-3 overflow-hidden rounded-3xl shadow-2xl">
               {images.slice(0, 4).map((src, i) => (
                 <button
                   key={i}
                   onClick={() => setLightbox(i)}
-                  className={`group relative overflow-hidden ${i === 0 ? 'col-span-2 row-span-2' : i === 1 ? 'col-span-2' : ''}`}
+                  className={`group relative overflow-hidden ${i === 0 ? 'col-span-2 row-span-2' : i === 1 || (i === 2 && images.length === 3) ? 'col-span-2' : ''}`}
                 >
                   <img src={src} alt={c.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   {i === 3 || (i === 2 && images.length === 3) ? (
@@ -99,17 +99,17 @@ export default function CabinDetail() {
               ))}
             </div>
           ) : (
-            <button onClick={() => setLightbox(0)} className="group mb-8 block w-full overflow-hidden rounded-[40px] shadow-2xl">
+            <button onClick={() => setLightbox(0)} className="group mb-8 block w-full overflow-hidden rounded-3xl shadow-2xl">
               <img src={images[0]} alt={c.name} className="h-[480px] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
             </button>
           )}
 
           <div className="mb-6 flex flex-wrap items-end gap-6">
-            <h1 className="serif text-5xl text-olive">{c.name}</h1>
+            <h1 className="font-display text-5xl text-brand">{c.name}</h1>
             {average != null && (
-              <div className="mb-1 flex items-center gap-2 rounded-2xl bg-olive/10 px-4 py-2">
-                <Star className="fill-olive text-olive" size={22} />
-                <span className="text-2xl leading-none font-bold text-olive">{average.toFixed(1)}</span>
+              <div className="mb-1 flex items-center gap-2 rounded-2xl bg-brand/10 px-4 py-2">
+                <Star className="fill-accent text-accent" size={22} />
+                <span className="text-2xl leading-none font-bold text-brand">{average.toFixed(1)}</span>
                 <span className="text-sm text-ink/60">
                   ({reviews.data!.length} {reviews.data!.length === 1 ? 'reseña' : 'reseñas'})
                 </span>
@@ -117,25 +117,25 @@ export default function CabinDetail() {
             )}
           </div>
           <div className="mb-8 flex flex-wrap items-center gap-4">
-            <span className="flex items-center gap-2 rounded-full bg-olive/10 px-4 py-2 font-semibold text-olive">
+            <span className="flex items-center gap-2 rounded-xl bg-river/10 px-4 py-2 font-semibold text-river">
               <Users size={20} /> Hasta {c.capacity} personas
             </span>
-            <span className="text-2xl font-bold text-olive">
+            <span className="text-2xl font-bold text-brand">
               {money(c.price)} <span className="text-sm font-normal text-ink/50">/ noche</span>
             </span>
           </div>
           <div className="space-y-8">
             <div>
-              <h3 className="serif mb-4 text-2xl">Descripción</h3>
+              <h3 className="font-display mb-4 text-2xl">Descripción</h3>
               <p className="leading-relaxed whitespace-pre-line text-ink/70">{c.description}</p>
             </div>
             {c.amenities.length > 0 && (
               <div>
-                <h3 className="serif mb-4 text-2xl">Comodidades</h3>
+                <h3 className="font-display mb-4 text-2xl">Comodidades</h3>
                 <div className="flex flex-wrap gap-3">
                   {c.amenities.map((a) => (
-                    <span key={a} className="flex items-center gap-2 rounded-2xl border border-olive/10 bg-white px-4 py-2 text-sm text-ink/70 shadow-sm">
-                      <span className="text-olive">{amenityIcon(a)}</span> {a}
+                    <span key={a} className="flex items-center gap-2 rounded-2xl border border-brand/10 bg-white px-4 py-2 text-sm text-ink/70 shadow-sm">
+                      <span className="text-brand">{amenityIcon(a)}</span> {a}
                     </span>
                   ))}
                 </div>
@@ -160,8 +160,10 @@ export default function CabinDetail() {
 
 function BookingForm({ cabin, booked }: { cabin: Cabin; booked: BookedRange[] }) {
   const [form, setForm] = useState({ guestName: '', whatsappNumber: '', guests: 2, notes: '' });
-  const [checkIn, setCheckIn] = useState<Date | null>(null);
-  const [checkOut, setCheckOut] = useState<Date | null>(null);
+  // Fechas elegidas en el buscador, si vienen en la URL.
+  const [params] = useSearchParams();
+  const [checkIn, setCheckIn] = useState<Date | null>(params.get('checkIn') ? toDate(params.get('checkIn')!) : null);
+  const [checkOut, setCheckOut] = useState<Date | null>(params.get('checkOut') ? toDate(params.get('checkOut')!) : null);
   const [accept, setAccept] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -210,12 +212,12 @@ function BookingForm({ cabin, booked }: { cabin: Cabin; booked: BookedRange[] })
     return (
       <div className="card p-10 text-center">
         <CheckCircle2 size={64} className="mx-auto mb-6 text-green-600" />
-        <h2 className="serif mb-4 text-3xl text-olive">¡Solicitud enviada!</h2>
+        <h2 className="font-display mb-4 text-3xl text-brand">¡Solicitud enviada!</h2>
         <p className="mb-2 text-ink/60">
           Registramos tu solicitud por {done.nights} {done.nights === 1 ? 'noche' : 'noches'} ({money(done.total)}).
         </p>
         <p className="mb-8 text-ink/60">Termina de confirmar tu reserva con nosotros por WhatsApp.</p>
-        <a href={done.whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn-primary bg-[#25D366] hover:bg-[#1ebe5b]">
+        <a href={done.whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn bg-[#25D366] text-white hover:bg-[#1ebe5b]">
           Abrir WhatsApp
         </a>
       </div>
@@ -224,7 +226,7 @@ function BookingForm({ cabin, booked }: { cabin: Cabin; booked: BookedRange[] })
 
   return (
     <div className="card p-8 sm:p-10">
-      <h2 className="serif mb-6 text-3xl text-olive">Reserva tu estancia</h2>
+      <h2 className="font-display mb-6 text-3xl text-brand">Reserva tu estancia</h2>
 
       {ranges.length > 0 && (
         <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4">
@@ -241,8 +243,8 @@ function BookingForm({ cabin, booked }: { cabin: Cabin; booked: BookedRange[] })
         </div>
       )}
 
-      <div className="mb-6 rounded-2xl bg-cream p-4">
-        <h4 className="mb-3 flex items-center gap-2 text-sm font-bold text-olive">
+      <div className="mb-6 rounded-2xl bg-sand p-4">
+        <h4 className="mb-3 flex items-center gap-2 text-sm font-bold text-brand">
           <Sparkles size={16} /> Fechas recomendadas
         </h4>
         <div className="flex flex-wrap gap-2">
@@ -254,7 +256,7 @@ function BookingForm({ cabin, booked }: { cabin: Cabin; booked: BookedRange[] })
                 setCheckIn(r.start);
                 setCheckOut(r.end ?? new Date(r.start.getTime() + 2 * DAY));
               }}
-              className="rounded-xl border border-olive/20 bg-white px-3 py-2 text-left text-xs font-medium text-olive transition hover:bg-olive hover:text-white"
+              className="rounded-xl border border-brand/20 bg-white px-3 py-2 text-left text-xs font-medium text-brand transition hover:bg-brand hover:text-white"
             >
               {r.end ? `${prettyDate(r.start, 'd MMM')} – ${prettyDate(r.end, 'd MMM')}` : `Desde el ${prettyDate(r.start, 'd MMM')}`}
             </button>
@@ -358,10 +360,10 @@ function BookingForm({ cabin, booked }: { cabin: Cabin; booked: BookedRange[] })
           />
         </div>
         <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-ink/70">
-          <input required type="checkbox" checked={accept} onChange={(e) => setAccept(e.target.checked)} className="mt-0.5 h-4 w-4 accent-olive" />
+          <input required type="checkbox" checked={accept} onChange={(e) => setAccept(e.target.checked)} className="mt-0.5 h-4 w-4 accent-brand" />
           <span>
             Acepto la{' '}
-            <Link to="/privacidad" target="_blank" className="font-medium underline hover:text-olive">
+            <Link to="/privacidad" target="_blank" className="font-medium underline hover:text-brand">
               Política de Privacidad
             </Link>{' '}
             y autorizo el tratamiento de mis datos personales según la Ley 1581 de 2012 (Hábeas Data).
@@ -411,12 +413,12 @@ function ReviewsSection({
   }
 
   return (
-    <section className="mt-24 border-t border-olive/10 pt-16">
+    <section className="mt-24 border-t border-brand/10 pt-16">
       <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-        <h2 className="serif text-4xl text-olive">Reseñas de huéspedes</h2>
+        <h2 className="font-display text-4xl text-brand">Reseñas de huéspedes</h2>
         {average != null && (
-          <div className="flex items-center gap-2 text-olive">
-            <Star className="fill-olive" size={26} />
+          <div className="flex items-center gap-2 text-brand">
+            <Star className="fill-accent text-accent" size={26} />
             <span className="text-3xl font-bold">{average.toFixed(1)}</span>
             <span className="text-ink/60">/ 5.0</span>
           </div>
@@ -424,8 +426,8 @@ function ReviewsSection({
       </div>
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
         <form onSubmit={submit} className="card space-y-4 p-8 lg:self-start">
-          <h3 className="serif text-2xl text-olive">Deja tu reseña</h3>
-          <div className="flex items-center gap-3 text-olive">
+          <h3 className="font-display text-2xl text-brand">Deja tu reseña</h3>
+          <div className="flex items-center gap-3 text-brand">
             <span className="text-sm font-medium tracking-widest text-ink/60 uppercase">Calificación</span>
             <Stars value={form.rating} size={24} onChange={(rating) => setForm({ ...form, rating })} />
           </div>
@@ -451,10 +453,10 @@ function ReviewsSection({
               <div key={r.id} className="card p-8">
                 <div className="mb-4 flex items-start justify-between gap-4">
                   <div>
-                    <h4 className="mb-1 text-lg font-bold text-olive">{r.guestName}</h4>
+                    <h4 className="mb-1 text-lg font-bold text-brand">{r.guestName}</h4>
                     <p className="text-xs tracking-widest text-ink/40 uppercase">{prettyDate(r.createdAt)}</p>
                   </div>
-                  <span className="text-olive"><Stars value={r.rating} /></span>
+                  <span className="text-brand"><Stars value={r.rating} /></span>
                 </div>
                 <p className="leading-relaxed text-ink/70">{r.comment}</p>
               </div>

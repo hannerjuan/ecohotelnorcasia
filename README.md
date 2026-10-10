@@ -6,7 +6,7 @@ Sitio web y panel de administración del EcoHotel Madeguadua (Norcasia, Caldas),
 
 | Parte | Tecnología |
 |---|---|
-| Frontend | React 19, Vite, TypeScript, Tailwind CSS 4, React Router, Leaflet (mapa), react-datepicker |
+| Frontend | React 19, Vite, TypeScript, Tailwind CSS 4 (tipografías Fraunces y Manrope), React Router, Leaflet (mapa), react-datepicker |
 | Backend | Node.js 22, Express 5, TypeScript, Zod (validación), JWT en cookie httpOnly, Multer (imágenes) |
 | Base de datos | PostgreSQL 16 con Prisma (migraciones y seed) |
 | Tiempo real | Server-Sent Events para avisar al panel de nuevas reservas |
@@ -123,7 +123,7 @@ frontend/
 | Método | Ruta | Acceso |
 |---|---|---|
 | POST | `/api/auth/login`, `/api/auth/logout` · GET `/api/auth/me` | Público |
-| GET | `/api/cabins`, `/api/cabins/:id`, `/api/cabins/:id/availability`, `/api/cabins/:id/reviews` | Público |
+| GET | `/api/cabins` (acepta `checkIn`, `checkOut`, `guests`), `/api/cabins/:id`, `/api/cabins/:id/availability`, `/api/cabins/:id/reviews` | Público |
 | POST | `/api/cabins/:id/reviews`, `/api/reservations` | Público (con límite de envíos) |
 | GET | `/api/activities`, `/api/menu`, `/api/settings`, `/api/reviews/featured` | Público |
 | POST/PUT/DELETE | `/api/cabins`, `/api/activities`, `/api/menu` | Admin |

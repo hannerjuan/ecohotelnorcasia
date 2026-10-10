@@ -1,5 +1,5 @@
 export function Loading({ label = 'Cargando...' }: { label?: string }) {
-  return <div className="serif flex h-72 animate-pulse items-center justify-center text-xl text-olive">{label}</div>;
+  return <div className="font-display flex h-72 animate-pulse items-center justify-center text-xl text-brand">{label}</div>;
 }
 
 export function ErrorState({ message }: { message: string }) {
@@ -7,5 +7,5 @@ export function ErrorState({ message }: { message: string }) {
 }
 
 export function Empty({ message }: { message: string }) {
-  return <div className="card serif p-16 text-center text-2xl text-ink/50">{message}</div>;
+  return <div className="card font-display p-16 text-center text-2xl text-ink/50">{message}</div>;
 }

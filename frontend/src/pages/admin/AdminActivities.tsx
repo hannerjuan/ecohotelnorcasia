@@ -53,7 +53,7 @@ export default function AdminActivities() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="serif text-3xl text-olive">Actividades</h2>
+        <h2 className="font-display text-3xl text-brand">Actividades</h2>
         <button className="btn-primary" onClick={() => open()}><Plus size={18} /> Nueva actividad</button>
       </div>
       {loading ? (
@@ -66,7 +66,7 @@ export default function AdminActivities() {
             <div key={a.id} className="card overflow-hidden">
               <img src={imageOr(a.imageUrl, a.id)} alt={a.name} className="h-44 w-full object-cover" />
               <div className="p-6">
-                <h3 className="serif text-xl text-olive">{a.name}</h3>
+                <h3 className="font-display text-xl text-brand">{a.name}</h3>
                 <p className="mb-4 text-sm text-ink/60">
                   {a.cost > 0 ? money(a.cost) : 'Incluido'} · {a.duration} · {DIFFICULTY_LABEL[a.difficulty]}
                 </p>
