@@ -36,7 +36,7 @@ Requisitos: Node.js 22 y PostgreSQL 16 (o `docker compose up db`).
 
 ```bash
 npm install
-cp backend/.env.example backend/.env     # ajusta DATABASE_URL y la clave del admin
+cp backend/.env.example backend/.env     # en Windows: copy backend\.env.example backend\.env
 cd backend
 npx prisma migrate dev                    # crea las tablas
 npm run db:seed                           # admin inicial + contenido de ejemplo
@@ -55,10 +55,22 @@ npm test                                  # o TEST_DATABASE_URL=... npm test
 
 ## Producción con Docker
 
+Linux / macOS:
+
 ```bash
-cp .env.example .env                      # cambia las claves
+cp .env.example .env                      # cambia ADMIN_PASSWORD y JWT_SECRET
 docker compose up -d --build
 ```
+
+Windows (cmd):
+
+```bat
+copy .env.example .env
+notepad .env
+docker compose up -d --build
+```
+
+En el Bloc de notas cambia `ADMIN_PASSWORD` (clave del panel) y `JWT_SECRET` (cualquier texto largo) antes de guardar. Si el archivo queda como `.env.txt`, renómbralo con `ren .env.txt .env`. En PowerShell usa `Copy-Item .env.example .env`.
 
 El sitio queda en `http://localhost:8080` (puerto `WEB_PORT`). Al arrancar, el API aplica las migraciones y crea el administrador inicial si no existe. Los datos de PostgreSQL y las imágenes subidas se guardan en volúmenes de Docker (`db-data` y `uploads`). Detrás de HTTPS, pon `COOKIE_SECURE=true`.
 
