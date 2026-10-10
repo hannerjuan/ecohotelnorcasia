@@ -45,7 +45,7 @@ function HotelForm() {
 
   return (
     <form onSubmit={save} className="card space-y-4 p-8">
-      <h2 className="serif text-3xl text-olive">Datos del hotel</h2>
+      <h2 className="font-display text-3xl text-brand">Datos del hotel</h2>
       <div>
         <label className="label">Nombre</label>
         <input required className="input" value={form.hotelName} onChange={(e) => setForm({ ...form, hotelName: e.target.value })} />
@@ -105,8 +105,8 @@ function AdminUsers() {
 
   return (
     <div className="card space-y-4 p-8">
-      <h2 className="serif text-3xl text-olive">Administradores</h2>
-      <ul className="divide-y divide-olive/10">
+      <h2 className="font-display text-3xl text-brand">Administradores</h2>
+      <ul className="divide-y divide-brand/10">
         {data?.filter((u) => u.role === 'admin').map((u) => (
           <li key={u.id} className="flex items-center justify-between py-3">
             <div>
@@ -119,7 +119,7 @@ function AdminUsers() {
           </li>
         ))}
       </ul>
-      <form onSubmit={create} className="space-y-3 border-t border-olive/10 pt-4">
+      <form onSubmit={create} className="space-y-3 border-t border-brand/10 pt-4">
         <input required className="input" placeholder="Nombre" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
         <input required type="email" className="input" placeholder="Correo" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
         <input required type="password" minLength={8} className="input" placeholder="Contraseña (mínimo 8 caracteres)" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
@@ -159,7 +159,7 @@ function PasswordForm() {
 
   return (
     <form onSubmit={save} className="card space-y-3 p-8">
-      <h2 className="serif text-3xl text-olive">Cambiar mi contraseña</h2>
+      <h2 className="font-display text-3xl text-brand">Cambiar mi contraseña</h2>
       <input required type="password" className="input" placeholder="Contraseña actual" value={form.currentPassword} onChange={(e) => setForm({ ...form, currentPassword: e.target.value })} />
       <input required type="password" minLength={8} className="input" placeholder="Nueva contraseña" value={form.newPassword} onChange={(e) => setForm({ ...form, newPassword: e.target.value })} />
       <Feedback message={message} />

@@ -20,7 +20,7 @@ export default function AdminReviews() {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="serif text-3xl text-olive">Reseñas</h2>
+        <h2 className="font-display text-3xl text-brand">Reseñas</h2>
         <p className="text-sm text-ink/60">Marca con la estrella las reseñas que quieres mostrar como testimonios en la página de inicio.</p>
       </div>
       {loading ? (
@@ -33,8 +33,8 @@ export default function AdminReviews() {
             <div key={r.id} className="card flex flex-col gap-4 p-6 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <div className="mb-1 flex flex-wrap items-center gap-3">
-                  <strong className="text-olive">{r.guestName}</strong>
-                  <span className="text-olive"><Stars value={r.rating} size={14} /></span>
+                  <strong className="text-brand">{r.guestName}</strong>
+                  <span className="text-brand"><Stars value={r.rating} size={14} /></span>
                   <span className="text-xs text-ink/40">{r.cabin?.name} · {prettyDate(r.createdAt)}</span>
                 </div>
                 <p className="text-sm text-ink/70">{r.comment}</p>
@@ -42,7 +42,7 @@ export default function AdminReviews() {
               <div className="flex shrink-0 gap-2">
                 <button
                   onClick={() => toggleFeatured(r)}
-                  className={`btn px-4 py-2 text-sm ${r.featured ? 'bg-olive text-white' : 'bg-cream text-ink/60'}`}
+                  className={`btn px-4 py-2 text-sm ${r.featured ? 'bg-brand text-white' : 'bg-sand text-ink/60'}`}
                   title="Mostrar en el inicio"
                 >
                   <Star size={16} className={r.featured ? 'fill-white' : ''} /> {r.featured ? 'Destacada' : 'Destacar'}

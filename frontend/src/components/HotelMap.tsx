@@ -9,6 +9,8 @@ import { ArrowRight } from 'lucide-react';
 import type { Cabin } from '../types';
 import { imageOr } from '../lib/format';
 
+// Corrige la ruta de los íconos de Leaflet al empaquetar con Vite.
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({ iconUrl: markerIcon, iconRetinaUrl: markerIcon2x, shadowUrl: markerShadow });
 
 export function HotelMap({ lat, lng, name, cabins }: { lat: number; lng: number; name: string; cabins: Cabin[] }) {
@@ -20,7 +22,7 @@ export function HotelMap({ lat, lng, name, cabins }: { lat: number; lng: number;
       />
       <Marker position={[lat, lng]}>
         <Popup>
-          <strong className="text-olive">{name}</strong>
+          <strong className="text-brand">{name}</strong>
           <br />
           Recepción principal
         </Popup>
@@ -32,8 +34,8 @@ export function HotelMap({ lat, lng, name, cabins }: { lat: number; lng: number;
             <Popup>
               <div className="max-w-[200px]">
                 <img src={imageOr(c.imageUrl, c.id, 400, 300)} alt={c.name} className="mb-2 h-24 w-full rounded-xl object-cover" />
-                <strong className="block text-olive">{c.name}</strong>
-                <Link to={`/cabanas/${c.id}`} className="mt-1 flex items-center gap-1 text-xs font-bold text-olive">
+                <strong className="block text-brand">{c.name}</strong>
+                <Link to={`/cabanas/${c.id}`} className="mt-1 flex items-center gap-1 text-xs font-bold text-brand">
                   Ver cabaña <ArrowRight size={12} />
                 </Link>
               </div>

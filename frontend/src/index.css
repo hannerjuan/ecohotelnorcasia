@@ -1,50 +1,61 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --color-olive: #5a5a40;
-  --color-olive-dark: #44442f;
-  --color-cream: #f5f5f0;
-  --color-ink: #1a1a1a;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  /* Selva profunda, río, arena y atardecer */
+  --color-brand: #12403c;
+  --color-brand-dark: #0b2b28;
+  --color-river: #2f7f86;
+  --color-accent: #d9733b;
+  --color-accent-dark: #b95d2b;
+  --color-sand: #f6f1e9;
+  --color-ink: #172321;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-cream);
+  background-color: var(--color-sand);
   color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
 }
 
-.serif {
-  font-family: var(--font-serif);
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
 }
 
 @utility card {
-  @apply rounded-[32px] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.05)];
+  @apply rounded-2xl border border-ink/5 bg-white shadow-[0_1px_2px_rgba(23,35,33,0.04),0_8px_24px_rgba(23,35,33,0.06)];
 }
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-medium tracking-wide transition disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
 }
 @utility btn-primary {
-  @apply btn bg-olive text-white hover:bg-olive-dark;
+  @apply btn bg-accent text-white shadow-sm hover:bg-accent-dark;
+}
+@utility btn-dark {
+  @apply btn bg-brand text-white hover:bg-brand-dark;
 }
 @utility btn-outline {
-  @apply btn border border-olive/30 text-olive hover:bg-olive hover:text-white;
+  @apply btn border border-brand/20 bg-white text-brand hover:border-brand hover:bg-brand hover:text-white;
 }
 @utility btn-danger {
   @apply btn bg-red-600 text-white hover:bg-red-700;
 }
 @utility input {
-  @apply w-full rounded-xl border border-transparent bg-cream p-3 outline-none transition focus:border-olive/40 focus:bg-white;
+  @apply w-full rounded-xl border border-ink/10 bg-white px-3.5 py-3 outline-none transition placeholder:text-ink/35 focus:border-river focus:ring-4 focus:ring-river/15;
 }
 @utility label {
-  @apply mb-1.5 block text-sm font-medium text-ink/60;
+  @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/55;
 }
 @utility eyebrow {
-  @apply mb-4 block text-sm font-bold uppercase tracking-[0.2em] text-olive;
+  @apply mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-accent;
 }
 @utility chip {
-  @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold;
+  @apply inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold;
 }
 
 /* Selector de fechas */
@@ -58,7 +69,7 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
 }
 .react-datepicker__header {
-  background-color: var(--color-cream) !important;
+  background-color: var(--color-sand) !important;
   border-bottom: none !important;
   border-top-left-radius: 16px !important;
   border-top-right-radius: 16px !important;
@@ -66,7 +77,7 @@ body {
 .react-datepicker__day--selected,
 .react-datepicker__day--keyboard-selected,
 .react-datepicker__day--in-range {
-  background-color: var(--color-olive) !important;
+  background-color: var(--color-river) !important;
   color: #fff !important;
 }
 .react-datepicker__day--disabled {
@@ -79,7 +90,7 @@ body {
 }
 
 .prose-legal h2 {
-  @apply font-serif mt-10 mb-3 text-3xl text-olive;
+  @apply font-display mt-10 mb-3 text-3xl text-brand;
 }
 .prose-legal p,
 .prose-legal li {

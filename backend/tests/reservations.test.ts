@@ -84,4 +84,20 @@ describe('reservas', () => {
     const availability = await request(app).get(`/api/cabins/${cabin.id}/availability`);
     expect(JSON.stringify(availability.body)).not.toContain('300');
   });
+
+  it('busca cabañas disponibles por fechas y personas', async () => {
+    const big = await createCabin({ name: 'Grande', capacity: 6 });
+    const small = await createCabin({ name: 'Pequeña', capacity: 2 });
+    const agent = await createAdmin();
+    const r = await request(app).post('/api/reservations').send(booking(big.id, futureDate(10), futureDate(12)));
+    await agent.patch(`/api/reservations/${r.body.reservation.id}/status`).send({ status: 'confirmed' }).expect(200);
+
+    const res = await request(app).get(`/api/cabins?checkIn=${futureDate(11)}&checkOut=${futureDate(13)}&guests=2`).expect(200);
+    const byName = Object.fromEntries(res.body.map((c: { name: string; available: boolean }) => [c.name, c.available]));
+    expect(byName).toEqual({ Grande: false, Pequeña: true });
+
+    const forFour = await request(app).get('/api/cabins?guests=4').expect(200);
+    expect(forFour.body.map((c: { name: string }) => c.name)).toEqual(['Grande']);
+    expect(small.id).toBeTruthy();
+  });
 });

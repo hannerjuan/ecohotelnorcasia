@@ -35,7 +35,7 @@ export default function AdminMenu() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="serif text-3xl text-olive">Menú del restaurante</h2>
+        <h2 className="font-display text-3xl text-brand">Menú del restaurante</h2>
         <button className="btn-primary" onClick={() => setEditing({ id: null, form: EMPTY })}><Plus size={18} /> Nuevo plato</button>
       </div>
       {loading ? (
@@ -43,7 +43,7 @@ export default function AdminMenu() {
       ) : !data?.length ? (
         <Empty message="El menú está vacío." />
       ) : (
-        <div className="card divide-y divide-olive/10">
+        <div className="card divide-y divide-brand/10">
           {data.map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-4 p-5">
               <div>
@@ -53,7 +53,7 @@ export default function AdminMenu() {
                 <p className="text-sm text-ink/50">{item.category} · {money(item.price)}</p>
               </div>
               <div className="flex gap-2">
-                <button className="btn bg-cream px-3 py-2 text-olive" onClick={() => setEditing({ id: item.id, form: { ...item } })} aria-label="Editar"><Edit2 size={16} /></button>
+                <button className="btn bg-sand px-3 py-2 text-brand" onClick={() => setEditing({ id: item.id, form: { ...item } })} aria-label="Editar"><Edit2 size={16} /></button>
                 <button className="btn bg-red-50 px-3 py-2 text-red-600" onClick={() => setToDelete(item)} aria-label="Eliminar"><Trash2 size={16} /></button>
               </div>
             </div>
@@ -87,7 +87,7 @@ export default function AdminMenu() {
               </div>
             </div>
             <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" className="accent-olive" checked={editing.form.available} onChange={(e) => set({ available: e.target.checked })} />
+              <input type="checkbox" className="accent-brand" checked={editing.form.available} onChange={(e) => set({ available: e.target.checked })} />
               Disponible
             </label>
             {error && <p className="text-sm text-red-600">{error}</p>}

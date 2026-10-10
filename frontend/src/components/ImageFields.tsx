@@ -64,7 +64,7 @@ export function GalleryField({ value, onChange }: { value: string[]; onChange: (
           type="button"
           onClick={() => input.current?.click()}
           disabled={busy}
-          className="flex h-20 items-center justify-center rounded-xl border-2 border-dashed border-olive/30 text-olive hover:bg-cream"
+          className="flex h-20 items-center justify-center rounded-xl border-2 border-dashed border-brand/30 text-brand hover:bg-sand"
         >
           {busy ? <Loader2 className="animate-spin" /> : <ImagePlus />}
         </button>
