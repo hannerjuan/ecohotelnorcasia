@@ -46,6 +46,35 @@ npm run dev                               # API en :4000 y web en http://localho
 
 Entra al panel en `http://localhost:5173/ingresar` con `ADMIN_EMAIL` / `ADMIN_PASSWORD` del archivo `.env`.
 
+### Windows sin Docker
+
+1. Instala [Node.js 22 LTS](https://nodejs.org) y [PostgreSQL 16](https://www.postgresql.org/download/windows/). Durante la instalación de PostgreSQL anota la contraseña del usuario `postgres`.
+2. Crea la base de datos (en cmd, desde la carpeta del proyecto):
+
+   ```bat
+   "C:\Program Files\PostgreSQL\16\bin\createdb.exe" -U postgres ecohotel
+   ```
+
+3. Configura y arranca:
+
+   ```bat
+   npm install
+   copy backend\.env.example backend\.env
+   notepad backend\.env
+   ```
+
+   En `DATABASE_URL` cambia `postgres:postgres` por `postgres:TU_CLAVE` (la que pusiste al instalar PostgreSQL) y guarda.
+
+   ```bat
+   cd backend
+   npx prisma migrate deploy
+   npm run db:seed
+   cd ..
+   npm run dev
+   ```
+
+4. Abre `http://localhost:5173`. El panel está en `http://localhost:5173/ingresar` con `ADMIN_EMAIL` / `ADMIN_PASSWORD` de `backend\.env`.
+
 ### Pruebas
 
 ```bash
