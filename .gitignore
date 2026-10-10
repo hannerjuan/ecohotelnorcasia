@@ -6,5 +6,5 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 coverage/
 .DS_Store
-tests/.uploads
+backend/tests/.uploads/
 *.tsbuildinfo
